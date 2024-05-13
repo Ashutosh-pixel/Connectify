@@ -1,9 +1,31 @@
 const mongoose = require("mongoose");
 const User = require("../model/user.model");
 const bcrypt = require("bcryptjs");
+const authToken = require("../utils/authtoken");
 
-function login(req, res, next) {
-  res.send("hi login!");
+async function login(req, res, next) {
+  try {
+    const { username, password } = req.body;
+    const data = await User.findOne({ username });
+    const correctpassword = await bcrypt.compare(password, data.password);
+
+    if (!data || !correctpassword) {
+      return res.send("Invalid username or password");
+    }
+
+    authToken(data._id, res);
+    res.status(200).json({
+      _id: data._id,
+      username: data.username,
+      fullname: data.fullname,
+      profile: data.profile,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "database can't able to save",
+      err: error.message,
+    });
+  }
 }
 
 function logout(req, res, next) {
@@ -37,17 +59,18 @@ async function signup(req, res, next) {
 
   //save data to mongodb
   try {
-    await User.create({
+    const newUser = await User.create({
       fullname,
       username,
       password: hashedPassword,
       gender,
       profile: gender == "male" ? boy : girl,
-    }).then(() => {
+    }).then((newUser) => {
+      authToken(newUser._id, res);
       return res.status(200).json({
         fullname,
         username,
-        password,
+        // password,
         gender,
       });
     });
