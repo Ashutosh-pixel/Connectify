@@ -4,7 +4,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [require("tailwindcss-filters"),
-    require('daisyui')
-  ],
+  plugins: [require("tailwindcss-filters")],
 };
