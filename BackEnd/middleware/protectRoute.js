@@ -10,7 +10,7 @@ async function protectRoute(req, res, next) {
         error: "unauthorized no token found",
       });
     }
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY); //return payload {}
 
     if (!decoded) {
       return res.status(401).json({
