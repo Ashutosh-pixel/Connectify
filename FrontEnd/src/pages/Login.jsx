@@ -1,15 +1,17 @@
 import React from "react";
 import backgroundImage from "../assets/1.jpg";
+import { NavLink } from 'react-router-dom';
 
 export default function Login() {
+  let userInfo = {username:"",password:""};
   return (
     <div
       className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      // style={{
+      //   backgroundImage: `url(${backgroundImage})`,
+      //   backgroundSize: "cover",
+      //   backgroundPosition: "center",
+      // }}
     >
       <div className=" w-4/12 bg-white/0 shadow-lg backdrop-blur rounded-2xl">
         <div className=" text-3xl text-center">
@@ -45,6 +47,7 @@ export default function Login() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="johndoe"
+                onChange={(e) => userInfo.username = e.target.value}
               />
             </div>
             <div className="mb-5">
@@ -59,6 +62,7 @@ export default function Login() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
+                onChange={(e)=> userInfo.password = e.target.value}
               />
             </div>
             {/* <div className="mb-5">
@@ -109,13 +113,19 @@ export default function Login() {
               </div>
             </div> */}
             <div className=" text-sm text-gray-500 dark:text-gray-400 h-8 hover:underline">
-              <a id="helper-text-explanation" href="">
+              {/* <a id="helper-text-explanation" href="">
                 Don't have an account?
-              </a>
+              </a> */}
+              <NavLink to={'/signup'}>Don't have an account?</NavLink>
             </div>
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(userInfo);
+                // console.log(username.length);
+              }}
             >
               Login
             </button>

@@ -33,11 +33,11 @@ function logout(req, res, next) {
 }
 
 async function signup(req, res, next) {
-  const { fullname, username, password, gender, confirmPassword } = req.body;
+  const { fullname, username, password, gender, confirmpassword } = req.body;
 
   const data = await User.findOne({ username });
 
-  if (password != confirmPassword) {
+  if (password != confirmpassword) {
     return res.status(400).json({
       error: "password not match",
     });

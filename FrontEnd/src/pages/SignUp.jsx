@@ -1,14 +1,53 @@
 import backgroundImage from "../assets/1.jpg";
+import { NavLink } from "react-router-dom";
+import SignupValidation from "../hooks/SignupValidation";
+import toast from "react-hot-toast";
 
 function SignUp() {
+  let userInfo = {username:"",password:"",fullname:"",confirmpassword:"",gender:""}
+  let success;
+  
+
+
+  function signupValidation(e){
+      e.preventDefault();
+      success = SignupValidation(userInfo);
+      console.log(userInfo);
+      if(success){
+        signup(userInfo);
+      }
+  }
+
+  async function signup(userInfo) {
+    try {
+        const res = await fetch('/api/auth/signup', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userInfo) // No need to manually pick fields, send entire userInfo object
+        });
+
+        // Check if the response is successful
+        if (!res.ok) {
+            // Assuming the server returns error messages in JSON format
+            const errorData = await res.json();
+            throw new Error(errorData.message || 'Failed to sign up'); // Throw error with server message or default message
+        }
+
+        const data = await res.json(); // Await the response data
+        console.log(data);
+    } catch (error) {
+        toast.error(error.message || 'Something went wrong'); // Display appropriate error message
+    }
+}
+  
   return (
     <div
       className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      // style={{
+      //   backgroundImage: `url(${backgroundImage})`,
+      //   backgroundSize: "cover",
+      //   backgroundPosition: "center",
+      // }}
     >
       <div className=" w-4/12 bg-white/0 shadow-lg backdrop-blur rounded-2xl">
         <div className=" text-3xl text-center">
@@ -29,6 +68,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="John Doe"
                 required
+                onChange={(e)=>userInfo.fullname = e.target.value}
               />
             </div>
             <div className="mb-5">
@@ -44,6 +84,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="johndoe"
+                onChange={(e)=>userInfo.username=e.target.value}
               />
             </div>
             <div className="mb-5">
@@ -58,6 +99,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
+                onChange={(e)=>userInfo.password=e.target.value}
               />
             </div>
             <div className="mb-5">
@@ -72,6 +114,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
+                onChange={(e)=>userInfo.confirmpassword=e.target.value}
               />
             </div>
             <div className="flex items-start mb-5 gap-2">
@@ -81,7 +124,15 @@ function SignUp() {
                   type="checkbox"
                   value=""
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  required
+                  
+                  onClick={(e)=>{
+                    if(e.target.checked){
+                      userInfo.gender="male"
+                    }
+                    // else{
+                    //   userInfo.gender=""
+                    // }
+                  }}
                 />
                 <label
                   htmlFor="male"
@@ -97,7 +148,14 @@ function SignUp() {
                   type="checkbox"
                   value=""
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  required
+                  onClick={(e)=>{
+                    if(e.target.checked){
+                      userInfo.gender="female"
+                    }
+                    // else{
+                    //   userInfo.gender=""
+                    // }
+                  }}
                 />
                 <label
                   htmlFor="female"
@@ -108,13 +166,15 @@ function SignUp() {
               </div>
             </div>
             <div className=" text-sm text-gray-500 dark:text-gray-400 h-8 hover:underline">
-              <a id="helper-text-explanation" href="">
+              {/* <a id="helper-text-explanation" href="">
                 Already have an account?
-              </a>
+              </a> */}
+              <NavLink to={'/login'}>Already have an account?</NavLink>
             </div>
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={(e) => signupValidation(e)}
             >
               Sign up
             </button>
