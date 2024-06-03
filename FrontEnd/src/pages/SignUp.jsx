@@ -2,44 +2,54 @@ import backgroundImage from "../assets/1.jpg";
 import { NavLink } from "react-router-dom";
 import SignupValidation from "../hooks/SignupValidation";
 import toast from "react-hot-toast";
+import { useContext } from "react";
+import { AuthContext } from "./../context/AuthContextProvider";
 
 function SignUp() {
-  let userInfo = {username:"",password:"",fullname:"",confirmpassword:"",gender:""}
+  const { authuser, setAuthuser } = useContext(AuthContext);
+  let userInfo = {
+    username: "",
+    password: "",
+    fullname: "",
+    confirmpassword: "",
+    gender: "",
+  };
   let success;
-  
 
-
-  function signupValidation(e){
-      e.preventDefault();
-      success = SignupValidation(userInfo);
-      console.log(userInfo);
-      if(success){
-        signup(userInfo);
-      }
+  function signupValidation(e) {
+    e.preventDefault();
+    success = SignupValidation(userInfo);
+    console.log(userInfo);
+    if (success) {
+      signup(userInfo);
+    }
   }
 
   async function signup(userInfo) {
     try {
-        const res = await fetch('/api/auth/signup', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userInfo) // No need to manually pick fields, send entire userInfo object
-        });
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInfo), // No need to manually pick fields, send entire userInfo object
+      });
 
-        // Check if the response is successful
-        if (!res.ok) {
-            // Assuming the server returns error messages in JSON format
-            const errorData = await res.json();
-            throw new Error(errorData.message || 'Failed to sign up'); // Throw error with server message or default message
-        }
+      // Check if the response is successful
+      if (!res.ok) {
+        // Assuming the server returns error messages in JSON format
+        const errorData = await res.json();
+        if (res.status == 409) {
+          throw new Error("User already exist");
+        } else throw new Error(errorData.message || "Failed to sign up"); // Throw error with server message or default message
+      }
 
-        const data = await res.json(); // Await the response data
-        console.log(data);
+      const data = await res.json();
+      localStorage.setItem("user-chat", JSON.stringify(data));
+      setAuthuser(data);
     } catch (error) {
-        toast.error(error.message || 'Something went wrong'); // Display appropriate error message
+      toast.error(error.message); // Display appropriate error message
     }
-}
-  
+  }
+
   return (
     <div
       className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden"
@@ -68,7 +78,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="John Doe"
                 required
-                onChange={(e)=>userInfo.fullname = e.target.value}
+                onChange={(e) => (userInfo.fullname = e.target.value)}
               />
             </div>
             <div className="mb-5">
@@ -84,7 +94,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="johndoe"
-                onChange={(e)=>userInfo.username=e.target.value}
+                onChange={(e) => (userInfo.username = e.target.value)}
               />
             </div>
             <div className="mb-5">
@@ -99,7 +109,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
-                onChange={(e)=>userInfo.password=e.target.value}
+                onChange={(e) => (userInfo.password = e.target.value)}
               />
             </div>
             <div className="mb-5">
@@ -114,7 +124,7 @@ function SignUp() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
-                onChange={(e)=>userInfo.confirmpassword=e.target.value}
+                onChange={(e) => (userInfo.confirmpassword = e.target.value)}
               />
             </div>
             <div className="flex items-start mb-5 gap-2">
@@ -124,10 +134,9 @@ function SignUp() {
                   type="checkbox"
                   value=""
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  
-                  onClick={(e)=>{
-                    if(e.target.checked){
-                      userInfo.gender="male"
+                  onClick={(e) => {
+                    if (e.target.checked) {
+                      userInfo.gender = "male";
                     }
                     // else{
                     //   userInfo.gender=""
@@ -148,9 +157,9 @@ function SignUp() {
                   type="checkbox"
                   value=""
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  onClick={(e)=>{
-                    if(e.target.checked){
-                      userInfo.gender="female"
+                  onClick={(e) => {
+                    if (e.target.checked) {
+                      userInfo.gender = "female";
                     }
                     // else{
                     //   userInfo.gender=""
@@ -169,7 +178,7 @@ function SignUp() {
               {/* <a id="helper-text-explanation" href="">
                 Already have an account?
               </a> */}
-              <NavLink to={'/login'}>Already have an account?</NavLink>
+              <NavLink to={"/login"}>Already have an account?</NavLink>
             </div>
             <button
               type="submit"
