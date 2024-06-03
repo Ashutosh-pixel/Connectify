@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useContext } from "react";
 import backgroundImage from "../assets/1.jpg";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import LoginValidation from "./../hooks/LoginValidation";
+import { AuthContext } from "../context/AuthContextProvider";
+import toast from "react-hot-toast";
 
 export default function Login() {
-  let userInfo = {username:"",password:""};
+  let userInfo = { username: "", password: "" };
+  let success = false;
+  const { authuser, setAuthuser } = useContext(AuthContext);
+
+  function loginValidation(e) {
+    e.preventDefault();
+    success = LoginValidation(userInfo);
+    console.log(userInfo, success);
+    if (success) {
+      login(userInfo);
+    }
+  }
+
+  async function login(userInfo) {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInfo), // No need to manually pick fields, send entire userInfo object
+      });
+
+      // console.log(userInfo);
+
+      // Check if the response is successful
+      if (!res.ok) {
+        // Assuming the server returns error messages in JSON format
+        // console.log(res);
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to login up"); // Throw error with server message or default message
+      }
+
+      const data = await res.json();
+      console.log(userInfo, data);
+      localStorage.setItem("user-chat", JSON.stringify(data));
+      setAuthuser(data);
+    } catch (error) {
+      toast.error(error.message); // Display appropriate error message
+    }
+  }
+
   return (
     <div
       className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden"
@@ -47,7 +89,7 @@ export default function Login() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="johndoe"
-                onChange={(e) => userInfo.username = e.target.value}
+                onChange={(e) => (userInfo.username = e.target.value)}
               />
             </div>
             <div className="mb-5">
@@ -62,7 +104,7 @@ export default function Login() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 placeholder="••••••••"
-                onChange={(e)=> userInfo.password = e.target.value}
+                onChange={(e) => (userInfo.password = e.target.value)}
               />
             </div>
             {/* <div className="mb-5">
@@ -116,15 +158,13 @@ export default function Login() {
               {/* <a id="helper-text-explanation" href="">
                 Don't have an account?
               </a> */}
-              <NavLink to={'/signup'}>Don't have an account?</NavLink>
+              <NavLink to={"/signup"}>Don't have an account?</NavLink>
             </div>
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={(e) => {
-                e.preventDefault();
-                console.log(userInfo);
-                // console.log(username.length);
+                loginValidation(e);
               }}
             >
               Login
