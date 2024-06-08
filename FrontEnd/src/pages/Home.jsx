@@ -1,11 +1,25 @@
-import Sidebar from '../components/sidebar/Sidebar';
-import MessageContainer from '../components/messages/MessageContainer';
+import Sidebar from "../components/sidebar/Sidebar";
+import MessageContainer from "../components/messages/MessageContainer";
+import useUsers from "../hooks/useUsers";
+import { AuthContext } from "../context/AuthContextProvider";
+import { useContext, useEffect } from "react";
+
 const Home = () => {
-	return (
-		<div className='flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-			<Sidebar/>
-			<MessageContainer/>
-		</div>
-	);
+  const { users, error, loading } = useUsers();
+
+  //   console.log(users);
+
+  return (
+    <div className="flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
+      {loading ? (
+        <h1>loading</h1>
+      ) : (
+        <>
+          <Sidebar />
+          <MessageContainer />
+        </>
+      )}
+    </div>
+  );
 };
 export default Home;

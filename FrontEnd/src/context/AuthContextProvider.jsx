@@ -6,8 +6,24 @@ export default function AuthContextProvider({ children }) {
   const [authuser, setAuthuser] = useState(
     JSON.parse(localStorage.getItem("user-chat") || null)
   );
+  const [getallusers, setallusers] = useState([]);
+  const [noChatSelected, setNoChatSelected] = useState(true);
+
+  const [chatSelect, setChatSelect] = useState({});
+
   return (
-    <AuthContext.Provider value={{ authuser, setAuthuser }}>
+    <AuthContext.Provider
+      value={{
+        authuser,
+        setAuthuser,
+        getallusers,
+        setallusers,
+        noChatSelected,
+        setNoChatSelected,
+        chatSelect,
+        setChatSelect,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

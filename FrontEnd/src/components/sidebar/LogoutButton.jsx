@@ -4,7 +4,9 @@ import { AuthContext } from "../../context/AuthContextProvider";
 
 const LogoutButton = () => {
   const { setAuthuser } = useContext(AuthContext);
+  const { setNoChatSelected } = useContext(AuthContext);
   async function logout() {
+    setNoChatSelected(true);
     try {
       const res = await fetch("/api/auth/logout", {
         method: "POST",
@@ -14,7 +16,6 @@ const LogoutButton = () => {
         throw new Error("Failed to logout");
       }
 
-      const data = await res.json();
       localStorage.removeItem("user-chat");
       setAuthuser(null);
     } catch (error) {
