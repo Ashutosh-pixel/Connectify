@@ -7,10 +7,19 @@ async function login(req, res, next) {
   try {
     const { username, password } = req.body;
     const data = await User.findOne({ username });
-    const correctpassword = await bcrypt.compare(password, data.password);
 
-    if (!data || !correctpassword) {
-      return res.send("Invalid username or password");
+    if (!data) {
+      return res.status(404).json({
+        error: "User not exist",
+      });
+      // throw new Error("User not exist");
+    }
+    const correctpassword = await bcrypt.compare(password, data.password);
+    if (!correctpassword) {
+      return res.status(400).json({
+        error: "password incorrect",
+      });
+      // throw new Error("password incorrect");
     }
 
     authToken(data._id, res);
@@ -21,15 +30,17 @@ async function login(req, res, next) {
       profile: data.profile,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: "database can't able to save",
-      err: error.message,
-    });
+    return res.status(400);
   }
 }
 
 function logout(req, res, next) {
-  res.send("hi logout!");
+  if (req.cookies.jwt) {
+    res.clearCookie("jwt");
+  }
+  return res.status(200).json({
+    message: "logout",
+  });
 }
 
 async function signup(req, res, next) {
@@ -39,13 +50,13 @@ async function signup(req, res, next) {
 
   if (password != confirmpassword) {
     return res.status(400).json({
-      error: "password not match",
+      message: "password not match",
     });
   }
 
   if (data) {
     return res.status(400).json({
-      error: "user already exist try to login",
+      message: "user already exist try to login",
     });
   }
 
@@ -65,14 +76,16 @@ async function signup(req, res, next) {
       password: hashedPassword,
       gender,
       profile: gender == "male" ? boy : girl,
-    }).then((newUser) => {
-      authToken(newUser._id, res);
-      return res.status(200).json({
-        fullname,
-        username,
-        gender,
+    })
+      //handle promise
+      .then((newUser) => {
+        authToken(newUser._id, res);
+        return res.status(200).json({
+          fullname,
+          username,
+          gender,
+        });
       });
-    });
   } catch (error) {
     return res.status(400).json({
       error: "database can't able to save",

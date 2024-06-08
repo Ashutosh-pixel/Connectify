@@ -21,6 +21,7 @@ function SignUp() {
     success = SignupValidation(userInfo);
     console.log(userInfo);
     if (success) {
+      console.log("success");
       signup(userInfo);
     }
   }
@@ -32,14 +33,25 @@ function SignUp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInfo), // No need to manually pick fields, send entire userInfo object
       });
+      //   .then((data) => {
+      //     const res = data.json();
+      //   })
+      //   .catch((err) => {
+      //     toast.error(err.message);
+      //   });
 
       // Check if the response is successful
+      // if (!res.ok) {
+      //   // Assuming the server returns error messages in JSON format
+      //   const errorData = await res.json();
+      //   if (res.status == 409) {
+      //     throw new Error("User already exist");
+      //   } else throw new Error(errorData.message || "Failed to sign up"); // Throw error with server message or default message
+      // }
+
       if (!res.ok) {
-        // Assuming the server returns error messages in JSON format
         const errorData = await res.json();
-        if (res.status == 409) {
-          throw new Error("User already exist");
-        } else throw new Error(errorData.message || "Failed to sign up"); // Throw error with server message or default message
+        throw new Error(errorData.message);
       }
 
       const data = await res.json();
@@ -51,14 +63,7 @@ function SignUp() {
   }
 
   return (
-    <div
-      className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden"
-      // style={{
-      //   backgroundImage: `url(${backgroundImage})`,
-      //   backgroundSize: "cover",
-      //   backgroundPosition: "center",
-      // }}
-    >
+    <div className="flex flex-col justify-center items-center h-screen flex-wrap w-screen overflow-hidden">
       <div className=" w-4/12 bg-white/0 shadow-lg backdrop-blur rounded-2xl">
         <div className=" text-3xl text-center">
           Sign Up <span className=" text-blue-700">Messenger</span>
@@ -138,9 +143,6 @@ function SignUp() {
                     if (e.target.checked) {
                       userInfo.gender = "male";
                     }
-                    // else{
-                    //   userInfo.gender=""
-                    // }
                   }}
                 />
                 <label
@@ -161,9 +163,6 @@ function SignUp() {
                     if (e.target.checked) {
                       userInfo.gender = "female";
                     }
-                    // else{
-                    //   userInfo.gender=""
-                    // }
                   }}
                 />
                 <label
@@ -175,9 +174,6 @@ function SignUp() {
               </div>
             </div>
             <div className=" text-sm text-gray-500 dark:text-gray-400 h-8 hover:underline">
-              {/* <a id="helper-text-explanation" href="">
-                Already have an account?
-              </a> */}
               <NavLink to={"/login"}>Already have an account?</NavLink>
             </div>
             <button

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import backgroundImage from "../assets/1.jpg";
 import { NavLink } from "react-router-dom";
 import LoginValidation from "./../hooks/LoginValidation";
 import { AuthContext } from "../context/AuthContextProvider";
