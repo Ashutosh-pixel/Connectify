@@ -1,8 +1,6 @@
 import Sidebar from "../components/sidebar/Sidebar";
 import MessageContainer from "../components/messages/MessageContainer";
 import useUsers from "../hooks/useUsers";
-import { AuthContext } from "../context/AuthContextProvider";
-import { useContext, useEffect } from "react";
 
 const Home = () => {
   const { users, error, loading } = useUsers();

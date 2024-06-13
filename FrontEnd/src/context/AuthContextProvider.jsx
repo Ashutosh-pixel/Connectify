@@ -10,6 +10,7 @@ export default function AuthContextProvider({ children }) {
   const [noChatSelected, setNoChatSelected] = useState(true);
 
   const [chatSelect, setChatSelect] = useState({});
+  const [userSelectId, setuserSelectId] = useState("");
 
   return (
     <AuthContext.Provider
@@ -22,6 +23,8 @@ export default function AuthContextProvider({ children }) {
         setNoChatSelected,
         chatSelect,
         setChatSelect,
+        userSelectId,
+        setuserSelectId,
       }}
     >
       {children}

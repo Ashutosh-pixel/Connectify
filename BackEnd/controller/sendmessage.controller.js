@@ -17,11 +17,11 @@ async function sendMessage(req, res) {
     console.log(messagedata);
 
     res.status(200).json({
-      message: "data send👍👍",
+      message: "message sent",
     });
   } catch (error) {
     res.status(400).json({
-      error: error,
+      error: "Message not able to send",
     });
   }
 }

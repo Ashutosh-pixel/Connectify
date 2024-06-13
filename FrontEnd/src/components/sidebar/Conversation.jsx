@@ -4,10 +4,16 @@ import { AuthContext } from "../../context/AuthContextProvider";
 const Conversation = ({ userdetail }) => {
   const { noChatSelected, setNoChatSelected } = useContext(AuthContext);
   const { setChatSelect } = useContext(AuthContext);
+  const { setuserSelectId } = useContext(AuthContext);
 
   console.log("noChatSelected ", noChatSelected);
   return (
-    <>
+    <div
+      onClick={() => {
+        setuserSelectId(userdetail._id);
+        // console.log(userSelectId);
+      }}
+    >
       <div
         className="flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer"
         onClick={() => {
@@ -30,7 +36,7 @@ const Conversation = ({ userdetail }) => {
       </div>
 
       <div className="divider my-0 py-0 h-1" />
-    </>
+    </div>
   );
 };
 export default Conversation;
