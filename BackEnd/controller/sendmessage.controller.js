@@ -8,13 +8,30 @@ async function sendMessage(req, res) {
 
     console.log(message, recieverId, senderId);
 
+    const messagesarray = await Message.findOne({ senderId, recieverId });
+
+    // console.log(messagesarray);
+
+    if (messagesarray) {
+      const newmessagearray = [...messagesarray.message, message];
+
+      await Message.updateOne(
+        { recieverId, senderId },
+        { message: newmessagearray }
+      );
+
+      return res.status(200).json({
+        message: newmessagearray,
+      });
+    }
+
     const messagedata = await Message.create({
       message: message,
       senderId: senderId,
       recieverId: recieverId,
     });
 
-    console.log(messagedata);
+    // console.log(messagedata);
 
     res.status(200).json({
       message: "message sent",

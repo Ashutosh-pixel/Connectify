@@ -4,13 +4,17 @@ import { AuthContext } from "../../context/AuthContextProvider";
 import { toast } from "react-hot-toast";
 
 const MessageInput = () => {
-  const [sentmessage, setMessage] = useState({ message: "" });
+  const [message, setMessage] = useState("");
   const { userSelectId } = useContext(AuthContext);
+  const { usermessage, setUserMessage } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userSelectId);
-    sendMessage();
+    // console.log(message);
+    if (message) {
+      sendMessage();
+    }
+    setMessage("");
   };
 
   const sendMessage = async function () {
@@ -18,14 +22,15 @@ const MessageInput = () => {
       const res = await fetch(`/auth/message/send/${userSelectId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sentmessage),
+        body: JSON.stringify({ message }),
       });
       if (!res.ok) {
         throw new Error(error);
       }
 
       const data = await res.json();
-      console.log(data);
+      setUserMessage(message);
+      // console.log(data);
     } catch (error) {
       toast.error(error);
     }
@@ -38,9 +43,10 @@ const MessageInput = () => {
           type="text"
           className="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 text-white"
           placeholder="Send a message"
+          value={message}
           onChange={(e) => {
-            sentmessage.message = e.target.value;
-            setMessage(sentmessage);
+            // sentmessage.message = e.target.value;
+            setMessage(e.target.value);
           }}
         />
         <button className="absolute inset-y-0 end-0 flex items-center pe-3">

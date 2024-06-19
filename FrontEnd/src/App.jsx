@@ -8,7 +8,7 @@ import { AuthContext } from "./context/AuthContextProvider";
 
 function App() {
   const { authuser } = useContext(AuthContext);
-  console.log(authuser);
+  // console.log(authuser);
   return (
     <div className="p-4 h-screen flex items-center justify-center">
       <Routes>

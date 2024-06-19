@@ -11,6 +11,7 @@ export default function AuthContextProvider({ children }) {
 
   const [chatSelect, setChatSelect] = useState({});
   const [userSelectId, setuserSelectId] = useState("");
+  const [usermessage, setUserMessage] = useState("");
 
   return (
     <AuthContext.Provider
@@ -25,6 +26,8 @@ export default function AuthContextProvider({ children }) {
         setChatSelect,
         userSelectId,
         setuserSelectId,
+        usermessage,
+        setUserMessage,
       }}
     >
       {children}
