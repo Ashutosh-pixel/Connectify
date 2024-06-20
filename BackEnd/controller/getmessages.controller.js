@@ -5,18 +5,26 @@ async function getMessage(req, res) {
     const { recieverId } = req.params;
     const senderId = req.user._id;
 
-    const messages = await Message.findOne({ senderId, recieverId });
-    if (messages) {
+    const messagesA = await Message.findOne({ senderId, recieverId });
+    const messagesB = await Message.findOne({
+      senderId: recieverId,
+      recieverId: senderId,
+    });
+
+    if (messagesA || messagesB) {
       return res.status(200).json({
-        message: messages,
+        senderMessage: messagesA ? messagesA.message : null,
+        recieverMessage: messagesB ? messagesB.message : null,
       });
     }
 
     return res.status(200).json({
       blankmessage: "Send a message to start the conversation",
+      senderMessage: null,
+      recieverMessage: null,
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       error: "Message not able to get",
     });
   }

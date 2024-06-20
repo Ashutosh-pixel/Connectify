@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContextProvider";
 import { toast } from "react-hot-toast";
 
 function useGetMessages() {
-  let [messageArray, setMessageArray] = useState([]);
+  let [messageArray, setMessageArray] = useState({});
   const [loading, setLoading] = useState(true);
   const { userSelectId } = useContext(AuthContext);
   const { usermessage, setUserMessage } = useContext(AuthContext);
@@ -24,10 +24,10 @@ function useGetMessages() {
         if (data.blankmessage) setBlank(data.blankmessage);
         else {
           setBlank("");
-          messageArray = data.message.message;
+          messageArray = data;
           setMessageArray(messageArray);
         }
-        // console.log(messageArray);
+        console.log(messageArray);
       } catch (error) {
         toast.error("Error fetching messages");
       } finally {
