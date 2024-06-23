@@ -1,21 +1,27 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContextProvider";
 
-const Conversation = ({ userdetail }) => {
+const Conversation = ({ userdetail, id }) => {
   const { noChatSelected, setNoChatSelected } = useContext(AuthContext);
   const { setChatSelect } = useContext(AuthContext);
   const { setuserSelectId } = useContext(AuthContext);
+  const { activelement, setActivelement } = useContext(AuthContext);
 
   console.log("noChatSelected ", noChatSelected);
   return (
     <div
       onClick={() => {
         setuserSelectId(userdetail._id);
+        setActivelement(id);
         // console.log(userSelectId);
       }}
     >
       <div
         className="flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer"
+        style={{
+          backgroundColor:
+            id == activelement ? "rgb(14 ,165 ,233)" : "transparent",
+        }}
         onClick={() => {
           setNoChatSelected(false);
           setChatSelect(userdetail);

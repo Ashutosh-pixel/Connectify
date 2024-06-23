@@ -14,7 +14,11 @@ const Conversations = () => {
       <Conversation /> */}
       {getallusers.map((userdetail, index) => {
         return (
-          <Conversation key={index} userdetail={userdetail}></Conversation>
+          <Conversation
+            key={index}
+            userdetail={userdetail}
+            id={index}
+          ></Conversation>
         );
       })}
     </div>
