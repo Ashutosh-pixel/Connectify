@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContextProvider";
 
 const Conversations = () => {
   const { getallusers } = useContext(AuthContext);
+  console.log(getallusers);
   return (
     <div className="py-2 flex flex-col overflow-auto">
       {/* <Conversation />
@@ -17,7 +18,7 @@ const Conversations = () => {
           <Conversation
             key={index}
             userdetail={userdetail}
-            id={index}
+            id={userdetail._id}
           ></Conversation>
         );
       })}
