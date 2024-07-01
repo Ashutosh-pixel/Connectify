@@ -1,11 +1,18 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContextProvider";
+import { SocketContext } from "./../../context/SocketContext";
 
 const Conversation = ({ userdetail, id }) => {
   const { noChatSelected, setNoChatSelected } = useContext(AuthContext);
   const { setChatSelect } = useContext(AuthContext);
   const { setuserSelectId } = useContext(AuthContext);
   const { activelement, setActivelement } = useContext(AuthContext);
+  const { onlineusers, setOnlineusers } = useContext(SocketContext);
+  let isonline = false;
+
+  if (id in onlineusers) {
+    isonline = true;
+  }
 
   console.log("noChatSelected ", noChatSelected);
   return (
@@ -27,7 +34,7 @@ const Conversation = ({ userdetail, id }) => {
           setChatSelect(userdetail);
         }}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isonline ? "online" : ""}`}>
           <div className="w-12 rounded-full">
             <img src={userdetail.profile} alt="user avatar" />
           </div>

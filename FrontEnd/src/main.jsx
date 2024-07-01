@@ -5,11 +5,14 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import AuthContextProvider from "./context/AuthContextProvider.jsx";
+import SocketContextProvider from "./context/SocketContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthContextProvider>
-      <App />
+      <SocketContextProvider>
+        <App />
+      </SocketContextProvider>
     </AuthContextProvider>
     <Toaster />
   </BrowserRouter>
