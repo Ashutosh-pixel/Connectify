@@ -1,4 +1,6 @@
 const Message = require("../model/message.model");
+const {getUserSocketId} = require('../socket/socket');
+const {io} = require('../socket/socket');
 
 async function sendMessage(req, res) {
   try {
@@ -20,6 +22,13 @@ async function sendMessage(req, res) {
         { message: newmessagearray }
       );
 
+      //socket
+      const recieverSocketId = getUserSocketId(recieverId);
+      if (recieverSocketId) {
+        io.to(recieverSocketId).emit("newmessage", message);
+      }
+      console.log("recieverSocketId = ",recieverSocketId)
+
       return res.status(200).json({
         message: newmessagearray,
       });
@@ -32,6 +41,13 @@ async function sendMessage(req, res) {
     });
 
     // console.log(messagedata);
+
+    //socket
+    const recieverSocketId = getUserSocketId(recieverId);
+    if (recieverSocketId) {
+      io.to(recieverSocketId).emit("newmessage", message);
+    }
+    console.log("recieverSocketId = ",recieverSocketId)
 
     res.status(200).json({
       message: "message sent",

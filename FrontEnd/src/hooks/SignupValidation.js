@@ -8,7 +8,7 @@ export default function SignupValidation(userInfo)
         return false;
     }
 
-    if(userInfo.password != userInfo.confirmpassword){
+    if(userInfo.password !== userInfo.confirmpassword){
        toast.error("password not match");
        return false;
     }

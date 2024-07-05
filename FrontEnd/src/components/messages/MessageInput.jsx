@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import { AuthContext } from "../../context/AuthContextProvider";
 import { toast } from "react-hot-toast";
+import SocketNewMessages from "../../hooks/SocketNewMessages.js";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");

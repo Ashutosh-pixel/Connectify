@@ -13,23 +13,27 @@ const io = new Server(server, {
   },
 });
 
+function getUserSocketId(id) {
+  if (id in onlineusers) return onlineusers[id];
+}
+
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
+  // console.log("a user connected", socket.id);
 
   const userid = socket.handshake.query.authuserID;
-
-  if (socket.id != "undefined") {
+  if (socket.id !== "undefined") {
     onlineusers[userid] = socket.id;
   }
 
-  // console.log(Object.keys(onlineusers));
+  console.log(Object.keys(onlineusers));
 
   io.emit("getonlineusers", onlineusers);
 
   socket.on("disconnect", () => {
     delete onlineusers[userid];
     io.emit("getonlineusers", onlineusers);
+    // console.log("disconnected", socket.id);
   });
 });
 
-module.exports = { app, io, server };
+module.exports = { app, io, server, getUserSocketId };

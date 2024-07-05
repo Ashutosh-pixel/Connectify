@@ -17,15 +17,11 @@ export default function SocketContextProvider({ children }) {
         },
       });
       setSocket(socket);
-      // console.log(socket);
-      // onlineusers[authuser._id] = socket;
-
       socket.on("getonlineusers", (users) => {
         onlineusers = users;
         setOnlineusers(onlineusers);
         console.log(onlineusers);
       });
-      // console.log(onlineusers);
     } else {
       if (socket) {
         socket.close();
