@@ -5,16 +5,19 @@ async function getMessage(req, res) {
     const { recieverId } = req.params;
     const senderId = req.user._id;
 
-    const messagesA = await Message.findOne({ senderId, recieverId });
-    const messagesB = await Message.findOne({
+    const messagesA = await Message.find({ senderId, recieverId });
+    const messagesB = await Message.find({
       senderId: recieverId,
       recieverId: senderId,
     });
 
+    console.log("messagesA = ", messagesA);
+    console.log("messagesB = ", messagesB);
+
     if (messagesA || messagesB) {
       return res.status(200).json({
-        senderMessage: messagesA ? messagesA.message : null,
-        recieverMessage: messagesB ? messagesB.message : null,
+        senderMessage: messagesA ? messagesA : null,
+        recieverMessage: messagesB ? messagesB : null,
       });
     }
 

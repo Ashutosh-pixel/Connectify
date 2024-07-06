@@ -1,6 +1,6 @@
 const Message = require("../model/message.model");
-const {getUserSocketId} = require('../socket/socket');
-const {io} = require('../socket/socket');
+const { getUserSocketId } = require("../socket/socket");
+const { io } = require("../socket/socket");
 
 async function sendMessage(req, res) {
   try {
@@ -10,44 +10,44 @@ async function sendMessage(req, res) {
 
     console.log(message, recieverId, senderId);
 
-    const messagesarray = await Message.findOne({ senderId, recieverId });
+    // const messagesarray = await Message.find({ senderId, recieverId });
 
     // console.log(messagesarray);
 
-    if (messagesarray) {
-      const newmessagearray = [...messagesarray.message, message];
-
-      await Message.updateOne(
-        { recieverId, senderId },
-        { message: newmessagearray }
-      );
-
-      //socket
-      const recieverSocketId = getUserSocketId(recieverId);
-      if (recieverSocketId) {
-        io.to(recieverSocketId).emit("newmessage", message);
-      }
-      console.log("recieverSocketId = ",recieverSocketId)
-
-      return res.status(200).json({
-        message: newmessagearray,
-      });
-    }
+    // if (messagesarray) {
+    //   const newmessage = messagesarray;
+    //
+    //   // await Message.updateOne(
+    //   //   { recieverId, senderId },
+    //   //   { message: newmessage }
+    //   // );
+    //
+    //   //socket
+    //   // const recieverSocketId = getUserSocketId(recieverId);
+    //   // if (recieverSocketId) {
+    //   //   io.to(recieverSocketId).emit("newmessage", message);
+    //   // }
+    //   // console.log("recieverSocketId = ",recieverSocketId)
+    //
+    //   // return res.status(200).json({
+    //   //   message: newmessage,
+    //   // });
+    // }
 
     const messagedata = await Message.create({
-      message: message,
-      senderId: senderId,
-      recieverId: recieverId,
+      message,
+      senderId,
+      recieverId,
     });
 
-    // console.log(messagedata);
+    console.log("messagedata = ", messagedata);
 
-    //socket
-    const recieverSocketId = getUserSocketId(recieverId);
-    if (recieverSocketId) {
-      io.to(recieverSocketId).emit("newmessage", message);
-    }
-    console.log("recieverSocketId = ",recieverSocketId)
+    // //socket
+    // const recieverSocketId = getUserSocketId(recieverId);
+    // if (recieverSocketId) {
+    //   io.to(recieverSocketId).emit("newmessage", message);
+    // }
+    // console.log("recieverSocketId = ",recieverSocketId)
 
     res.status(200).json({
       message: "message sent",

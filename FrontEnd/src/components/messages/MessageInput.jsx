@@ -7,13 +7,14 @@ import SocketNewMessages from "../../hooks/SocketNewMessages.js";
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { userSelectId } = useContext(AuthContext);
-  const { usermessage, setUserMessage } = useContext(AuthContext);
+  let { usermessage, setUserMessage } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(message);
     if (message) {
       sendMessage();
+      console.log(message);
     }
     setMessage("");
   };
@@ -26,12 +27,12 @@ const MessageInput = () => {
         body: JSON.stringify({ message }),
       });
       if (!res.ok) {
-        throw new Error(error);
+        throw new Error("nhi chal rha");
       }
 
       const data = await res.json();
-      setUserMessage(message);
-      // console.log(data);
+      usermessage = message;
+      setUserMessage(usermessage);
     } catch (error) {
       toast.error(error);
     }

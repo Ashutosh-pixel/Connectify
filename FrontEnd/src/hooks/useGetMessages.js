@@ -24,10 +24,29 @@ function useGetMessages() {
         if (data.blankmessage) setBlank(data.blankmessage);
         else {
           setBlank("");
-          messageArray = data;
+
+          // Step 1: Create a complete array by merging recieverMessage and senderMessage arrays
+          let completeMessages = [
+            ...data.recieverMessage.map((msg) => ({
+              ...msg,
+              identity: "recieverMessage",
+            })),
+            ...data.senderMessage.map((msg) => ({
+              ...msg,
+              identity: "senderMessage",
+            })),
+          ];
+
+          // Step 2: Sort the complete array by createdAt
+          completeMessages.sort(
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+          );
+
+          messageArray = completeMessages;
+
           setMessageArray(messageArray);
         }
-        console.log(messageArray);
+        console.log("messageArray = ", messageArray);
       } catch (error) {
         toast.error("Error fetching messages");
       } finally {
