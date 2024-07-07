@@ -42,12 +42,12 @@ async function sendMessage(req, res) {
 
     console.log("messagedata = ", messagedata);
 
-    // //socket
-    // const recieverSocketId = getUserSocketId(recieverId);
-    // if (recieverSocketId) {
-    //   io.to(recieverSocketId).emit("newmessage", message);
-    // }
-    // console.log("recieverSocketId = ",recieverSocketId)
+    //socket
+    const recieverSocketId = getUserSocketId(recieverId);
+    if (recieverSocketId) {
+      io.to(recieverSocketId).emit("newmessage", message);
+    }
+    console.log("recieverSocketId = ", recieverSocketId);
 
     res.status(200).json({
       message: "message sent",

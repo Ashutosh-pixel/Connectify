@@ -14,7 +14,7 @@ async function getMessage(req, res) {
     console.log("messagesA = ", messagesA);
     console.log("messagesB = ", messagesB);
 
-    if (messagesA || messagesB) {
+    if (messagesA.length > 0 || messagesB.length > 0) {
       return res.status(200).json({
         senderMessage: messagesA ? messagesA : null,
         recieverMessage: messagesB ? messagesB : null,

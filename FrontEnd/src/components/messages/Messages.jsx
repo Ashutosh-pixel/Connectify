@@ -6,8 +6,8 @@ import { useEffect } from "react";
 
 const Messages = () => {
   const { messageArray, blank } = useGetMessages();
-  // console.log(messageArray);
-  // SocketNewMessages();
+  console.log(messageArray);
+  SocketNewMessages();
   return (
     <div className="px-4 flex-1 overflow-auto">
       {blank ? (
@@ -24,9 +24,17 @@ const Messages = () => {
             {Array.isArray(messageArray) &&
               messageArray.map((person, index) =>
                 person.identity === "senderMessage" ? (
-                  <MessageEnd message={person.message} key={index} />
+                  <MessageEnd
+                    message={person.message}
+                    key={index}
+                    time={person.createdAt}
+                  />
                 ) : (
-                  <MessageStart message={person.message} key={index} />
+                  <MessageStart
+                    message={person.message}
+                    key={index}
+                    time={person.createdAt}
+                  />
                 )
               )}
           </>
