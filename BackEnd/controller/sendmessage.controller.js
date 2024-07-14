@@ -1,4 +1,5 @@
 const Message = require("../model/message.model");
+const UnreadMessages = require("../model/unread.model");
 const { getUserSocketId } = require("../socket/socket");
 const { io } = require("../socket/socket");
 
@@ -34,18 +35,26 @@ async function sendMessage(req, res) {
     //   // });
     // }
 
+    const newmessage = await UnreadMessages.create({
+      senderId,
+      recieverId,
+      unreadMessages: message,
+    });
+
     const messagedata = await Message.create({
       message,
       senderId,
       recieverId,
     });
 
-    console.log("messagedata = ", messagedata);
+    // //("messagedata = ", messagedata);
+    //("newmessages", newmessages);
 
     //socket
     const recieverSocketId = getUserSocketId(recieverId);
     if (recieverSocketId) {
       io.to(recieverSocketId).emit("newmessage", message);
+      io.to(recieverSocketId).emit("unreadmessage", newmessage);
     }
     console.log("recieverSocketId = ", recieverSocketId);
 

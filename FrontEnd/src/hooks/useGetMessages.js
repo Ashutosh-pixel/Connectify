@@ -8,6 +8,7 @@ function useGetMessages() {
   const { userSelectId } = useContext(AuthContext);
   const { usermessage, setUserMessage } = useContext(AuthContext);
   const [blank, setBlank] = useState("");
+  let { dummymessage, setDummymessage } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +47,7 @@ function useGetMessages() {
 
           setMessageArray(messageArray);
         }
-        console.log("messageArray = ", messageArray);
+        // console.log("messageArray = ", messageArray);
       } catch (error) {
         toast.error("Error fetching messages");
       } finally {
@@ -54,10 +55,8 @@ function useGetMessages() {
       }
     };
 
-    if (userSelectId) {
-      fetchData();
-    }
-  }, [userSelectId, usermessage]);
+    fetchData();
+  }, [usermessage, dummymessage, userSelectId]);
 
   return { loading, messageArray, blank };
 }

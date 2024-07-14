@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const Messages = () => {
   const { messageArray, blank } = useGetMessages();
-  console.log(messageArray);
+  // console.log(messageArray);
   SocketNewMessages();
   return (
     <div className="px-4 flex-1 overflow-auto">

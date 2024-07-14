@@ -8,10 +8,10 @@ const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { userSelectId } = useContext(AuthContext);
   let { usermessage, setUserMessage } = useContext(AuthContext);
+  let { dummymessage, setDummymessage } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(message);
     if (message) {
       sendMessage();
       console.log(message);
@@ -33,6 +33,8 @@ const MessageInput = () => {
       const data = await res.json();
       usermessage = message;
       setUserMessage(usermessage);
+      dummymessage = dummymessage + 1;
+      setDummymessage(dummymessage);
     } catch (error) {
       toast.error(error);
     }

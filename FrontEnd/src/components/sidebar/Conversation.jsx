@@ -5,7 +5,7 @@ import { SocketContext } from "./../../context/SocketContext";
 const Conversation = ({ userdetail, id }) => {
   const { noChatSelected, setNoChatSelected } = useContext(AuthContext);
   const { setChatSelect } = useContext(AuthContext);
-  const { setuserSelectId } = useContext(AuthContext);
+  const { userSelectId, setuserSelectId } = useContext(AuthContext);
   const { activelement, setActivelement } = useContext(AuthContext);
   const { onlineusers, setOnlineusers } = useContext(SocketContext);
   let isonline = false;
@@ -14,15 +14,9 @@ const Conversation = ({ userdetail, id }) => {
     isonline = true;
   }
 
-  console.log("noChatSelected ", noChatSelected);
+  // console.log("noChatSelected ", noChatSelected);
   return (
-    <div
-      onClick={() => {
-        setuserSelectId(userdetail._id);
-        setActivelement(id);
-        // console.log(userSelectId);
-      }}
-    >
+    <div>
       <div
         className="flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer"
         style={{
@@ -32,6 +26,9 @@ const Conversation = ({ userdetail, id }) => {
         onClick={() => {
           setNoChatSelected(false);
           setChatSelect(userdetail);
+          setuserSelectId(id);
+          setActivelement(id);
+          console.log(userSelectId);
         }}
       >
         <div className={`avatar ${isonline ? "online" : ""}`}>
