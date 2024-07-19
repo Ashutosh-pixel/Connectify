@@ -4,7 +4,7 @@ import { SocketContext } from "../context/SocketContext";
 import toast from "react-hot-toast";
 
 export default function useUnreadMessages() {
-  const [unreadMessages, setUnreadMessages] = useState([]);
+  const { unreadMessages, setUnreadMessages } = useContext(AuthContext);
   const { authuser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
   const { userSelectId } = useContext(AuthContext);
@@ -52,7 +52,7 @@ export default function useUnreadMessages() {
       } else {
         // Add to unread messages and show notification
         setUnreadMessages((prevMessages) => [...prevMessages, message]);
-        toast(`New message from ${message.senderId}`);
+        // toast(`New message from ${message.senderId}`);
       }
     };
 

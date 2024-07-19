@@ -14,6 +14,7 @@ export default function AuthContextProvider({ children }) {
   const [usermessage, setUserMessage] = useState("");
   const [activelement, setActivelement] = useState(null);
   const [dummymessage, setDummymessage] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState([]);
 
   return (
     <AuthContext.Provider
@@ -34,6 +35,8 @@ export default function AuthContextProvider({ children }) {
         setActivelement,
         dummymessage,
         setDummymessage,
+        unreadMessages,
+        setUnreadMessages,
       }}
     >
       {children}

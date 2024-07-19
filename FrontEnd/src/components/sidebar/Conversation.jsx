@@ -1,18 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContextProvider";
 import { SocketContext } from "./../../context/SocketContext";
+import Badge from "../badge/Badge";
 
-const Conversation = ({ userdetail, id }) => {
+const Conversation = ({ userdetail, id, unreadmessagecount }) => {
   const { noChatSelected, setNoChatSelected } = useContext(AuthContext);
   const { setChatSelect } = useContext(AuthContext);
   const { userSelectId, setuserSelectId } = useContext(AuthContext);
   const { activelement, setActivelement } = useContext(AuthContext);
   const { onlineusers, setOnlineusers } = useContext(SocketContext);
+  const [unreadcount, setunreadmessagecount] = useState(null);
+
   let isonline = false;
 
   if (id in onlineusers) {
     isonline = true;
   }
+  // if (unreadmessagecount) {
+  //   console.log("unreadmessagecount =", unreadmessagecount);
+  // }
+
+  useEffect(() => {
+    setunreadmessagecount(unreadmessagecount);
+  }, [unreadmessagecount]);
 
   // console.log("noChatSelected ", noChatSelected);
   return (
@@ -28,7 +38,7 @@ const Conversation = ({ userdetail, id }) => {
           setChatSelect(userdetail);
           setuserSelectId(id);
           setActivelement(id);
-          console.log(userSelectId);
+          console.log("userSelectId == ", userSelectId);
         }}
       >
         <div className={`avatar ${isonline ? "online" : ""}`}>
@@ -40,7 +50,14 @@ const Conversation = ({ userdetail, id }) => {
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
             <p className="font-bold text-gray-200">{userdetail.fullname}</p>
-            <span className="text-xl">🎃</span>
+            {/* <div className="">{unreadmessagecount[id]}</div> */}
+            {unreadmessagecount[id] ? (
+              <div className="flex flex-col items-center justify-center">
+                <Badge value={unreadmessagecount[id]} />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

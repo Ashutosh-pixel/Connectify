@@ -13,7 +13,7 @@ export default function Notification() {
   }, [markAsReadStatus]);
 
   useEffect(() => {
-    console.log("Unread messages: ", unreadMessages);
+    // console.log("Unread messages: ", unreadMessages);
   }, [unreadMessages]);
 
   // const handleChatClick = (userId) => {
@@ -22,13 +22,13 @@ export default function Notification() {
 
   return (
     <div>
-      <div>
+      {/* <div>
         {unreadMessages.length > 0 ? (
           <p>Unread messages: {unreadMessages.length}</p>
         ) : (
           <p>No unread messages</p>
         )}
-      </div>
+      </div> */}
       {/* Render chat list and call handleChatClick on chat click */}
       {/* <button onClick={() => handleChatClick("userId1")}>
         Chat with User 1
