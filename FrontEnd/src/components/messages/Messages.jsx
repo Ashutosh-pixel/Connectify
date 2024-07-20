@@ -3,13 +3,25 @@ import useGetMessages from "../../hooks/useGetMessages";
 import MessageEnd from "./MessageEnd";
 import SocketNewMessages from "../../hooks/SocketNewMessages.js";
 import { useEffect } from "react";
+import { useRef } from "react";
 
 const Messages = () => {
   const { messageArray, blank } = useGetMessages();
-  // console.log(messageArray);
+  const chatContainerRef = useRef(null);
   SocketNewMessages();
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [messageArray]);
+
   return (
-    <div className="px-4 flex-1 overflow-auto">
+    <div
+      className="px-4 flex-1 overflow-auto scroll-smooth"
+      ref={chatContainerRef}
+    >
       {blank ? (
         <>{blank}</>
       ) : (
