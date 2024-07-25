@@ -14,10 +14,10 @@
 
 .date-separator .date {
   padding: 0 5px;
-  font-size: 12px; /* Smaller font size */
-  background-color: #fff;
-  color: #555;
-  border-radius: 5px;
+  font-size: 10px; /* Smaller font size */
+  background-color: #414141;
+  color: #ffffff;
+  border-radius: 4px;
   white-space: nowrap;
   font-weight: normal; /* Non-bold text */
 }

@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import { AuthContext } from "../../context/AuthContextProvider";
 import { toast } from "react-hot-toast";
-import SocketNewMessages from "../../hooks/SocketNewMessages.js";
+import Spinner from "../spinner/Spinner";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { userSelectId } = useContext(AuthContext);
   let { usermessage, setUserMessage } = useContext(AuthContext);
   let { dummymessage, setDummymessage } = useContext(AuthContext);
+  const [sendloader, setSendloader] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ const MessageInput = () => {
 
   const sendMessage = async function () {
     try {
+      setSendloader(true);
       const res = await fetch(`/auth/message/send/${userSelectId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,6 +31,8 @@ const MessageInput = () => {
       if (!res.ok) {
         throw new Error("nhi chal rha");
       }
+
+      setSendloader(false);
 
       const data = await res.json();
       usermessage = message;
@@ -54,7 +58,7 @@ const MessageInput = () => {
           }}
         />
         <button className="absolute inset-y-0 end-0 flex items-center pe-3">
-          <BsSend />
+          {sendloader ? <Spinner /> : <BsSend />}
         </button>
       </div>
     </form>

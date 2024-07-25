@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { AuthContext } from "../../context/AuthContextProvider";
+import { IoLogOut } from "react-icons/io5";
 
 const LogoutButton = () => {
   const { setAuthuser } = useContext(AuthContext);
@@ -24,7 +25,8 @@ const LogoutButton = () => {
   }
   return (
     <div onClick={() => logout()} className="mt-auto">
-      <BiLogOut className="w-6 h-6 text-white cursor-pointer" />
+      {/* <BiLogOut className="w-6 h-6 text-white cursor-pointer" /> */}
+      <IoLogOut className="w-6 h-6 text-white cursor-pointer" />
     </div>
   );
 };

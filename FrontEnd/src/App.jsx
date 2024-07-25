@@ -10,7 +10,7 @@ function App() {
   const { authuser } = useContext(AuthContext);
   // console.log(authuser);
   return (
-    <div className="p-4 h-screen flex items-center justify-center">
+    <div className="p-4 h-screen flex items-center justify-center bg-gray-800 select-none">
       <Routes>
         <Route
           path="/"

@@ -50,7 +50,7 @@ const Messages = () => {
       ref={chatContainerRef}
     >
       {blank ? (
-        <>{blank}</>
+        <div className=" text-center select-none">{blank}</div>
       ) : (
         Array.isArray(messageArray) && (
           <>
