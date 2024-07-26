@@ -24,7 +24,7 @@ function App() {
           path="/signup"
           element={authuser ? <Navigate to="/"></Navigate> : <SignUp></SignUp>}
         ></Route>
-        <Route path="*" element={<div>400 ERROR</div>}></Route>
+        <Route path="*" element={<div>404 ERROR</div>}></Route>
       </Routes>
     </div>
   );
