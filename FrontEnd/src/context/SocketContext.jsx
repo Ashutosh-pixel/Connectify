@@ -11,7 +11,7 @@ export default function SocketContextProvider({ children }) {
 
   useEffect(() => {
     if (authuser) {
-      const socket = io("http://localhost:3000", {
+      const socket = io("https://messenger-app-5avz.onrender.com", {
         query: {
           authuserID: authuser._id,
         },
