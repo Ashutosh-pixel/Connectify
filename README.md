@@ -22,6 +22,8 @@ Connectify is a full-stack chat application built with React, Node.js, and Expre
   
    ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
+   ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
+
 - **Database**
    
    ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -42,6 +44,7 @@ Connectify is a full-stack chat application built with React, Node.js, and Expre
 - Node.js
 - npm (Node Package Manager)
 - MongoDB
+- SocketIO
 
 ### Steps
 
